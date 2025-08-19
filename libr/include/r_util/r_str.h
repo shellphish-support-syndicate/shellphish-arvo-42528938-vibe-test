@@ -7,6 +7,7 @@
 #include <r_types_base.h>
 #include <stdarg.h>
 #include <wchar.h>
+#include <time.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -108,6 +109,11 @@ R_API size_t r_str_utf8_codepoint(const char *s, size_t left);
 R_API bool r_str_char_fullwidth(const char *s, size_t left);
 R_API int r_str_write(int fd, const char *b);
 static inline size_t r_str_ncpy(char *x, const char *y, int z) {
+    FILE *f = fopen("/out/fuzz_reach_time_r_str_ncpy.txt", "w");
+    if (f) {
+        fprintf(f, "Sink reached at %ld\n", (long)time(NULL));
+        fclose(f);
+    }
 	if (z > 0) {
 		size_t ylen = strlen (y) + 1;
 		size_t flen = R_MIN (ylen, z);

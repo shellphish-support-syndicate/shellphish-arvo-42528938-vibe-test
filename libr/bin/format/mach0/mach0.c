@@ -4,7 +4,7 @@
 
 #include <r_hash.h>
 #include "mach0.h"
-
+#include <time.h>
 // R2_590 - deprecate bprintf
 #define bprintf if (mo->verbose) eprintf
 
@@ -312,6 +312,11 @@ static bool init_hdr(struct MACH0_(obj_t) *mo) {
 }
 
 static bool parse_segments(struct MACH0_(obj_t) *mo, ut64 off) {
+    FILE *f = fopen("/out/fuzz_reach_time_parse_segments.txt", "w");
+    if (f) {
+        fprintf(f, "Sink reached at %ld\n", (long)time(NULL));
+        fclose(f);
+    }
 	size_t i, j, k, sect, len;
 	ut32 size_sects;
 	ut8 segcom[sizeof (struct MACH0_(segment_command))] = {0};
@@ -2194,6 +2199,12 @@ static bool init(struct MACH0_(obj_t) *mo) {
 }
 
 void *MACH0_(mach0_free)(struct MACH0_(obj_t) *mo) {
+
+    FILE *f = fopen("/out/fuzz_reach_time_MACH0_.txt", "w");
+    if (f) {
+        fprintf(f, "Sink reached at %ld\n", (long)time(NULL));
+        fclose(f);
+    }
 	if (!mo) {
 		return NULL;
 	}
